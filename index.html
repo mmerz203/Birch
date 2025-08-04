@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>7-Day Surrender Journey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #63B4D1; /* New background color */
+        }
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .card {
+            background-color: #EDDFEF; /* New card color */
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main App Container -->
+    <div id="app" class="app-container">
+
+        <!-- Home Screen -->
+        <div id="home-screen" class="w-full flex-grow">
+            <h1 class="text-3xl font-bold text-center mb-8" style="color: #3D2C2E;">7-Day Surrender Journey</h1>
+            <p class="text-center mb-8" style="color: #3D2C2E;">
+                To soften your heart and be more receptive to Jesus and His Holy Spirit.
+            </p>
+            <div id="day-list" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Day cards will be injected here by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Day Detail Screen -->
+        <div id="day-detail-screen" class="hidden w-full flex-grow">
+            <div class="flex items-center justify-between mb-6">
+                <button id="back-button" class="flex items-center hover:text-gray-900 transition-colors" style="color: #3D2C2E;">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    Back
+                </button>
+                <div class="flex items-center space-x-2">
+                    <button id="prev-day" class="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors" title="Previous Day" style="color: #3D2C2E;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button id="next-day" class="p-2 bg-white rounded-full shadow-md hover:bg-gray-100 transition-colors" title="Next Day" style="color: #3D2C2E;">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <h2 id="day-title" class="text-2xl font-bold mb-2" style="color: #3D2C2E;"></h2>
+            <p id="day-theme" class="text-lg mb-6" style="color: #3D2C2E;"></p>
+
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-xl font-bold mb-3" style="color: #3D2C2E;">Scripture</h3>
+                <p id="day-scripture" class="text-base italic" style="color: #3D2C2E;"></p>
+            </div>
+
+            <div class="card p-6 rounded-xl mb-6 space-y-4">
+                <div>
+                    <h3 class="text-xl font-bold mb-2" style="color: #3D2C2E;">Guided Prayer Focus</h3>
+                    <p id="prayer-focus" style="color: #3D2C2E;"></p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-2" style="color: #3D2C2E;">Reflection Prompt</h3>
+                    <p id="reflection-prompt" style="color: #3D2C2E;"></p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-2" style="color: #3D2C2E;">Hope Carrier Action</h3>
+                    <p id="hope-carrier-action" style="color: #3D2C2E;"></p>
+                </div>
+            </div>
+
+            <div class="card p-6 rounded-xl mb-6">
+                <h3 class="text-xl font-bold mb-3" style="color: #3D2C2E;">Journal</h3>
+                <textarea id="journal-entry" class="w-full h-32 p-3 border rounded-lg focus:outline-none focus:ring-2" placeholder="Write your thoughts here..." style="background-color: #F8F1F9; border-color: #A0BFCB; color: #3D2C2E;"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data for the 7-day journey
+        const journeyData = [
+            {
+                title: "Day 1: A Jesus-Focused Life",
+                theme: "Hope is a Person, and His name is Jesus.",
+                scripture: "I am the way and the truth and the life. No one comes to the Father except through me. - John 14:6",
+                prayerFocus: "Surrendering your focus and priorities, placing Jesus at the center of your heart and life.",
+                reflectionPrompt: "What is one area of my life that needs to be more focused on Jesus today?",
+                hopeCarrierAction: "Identify one distraction and commit to turning away from it.",
+            },
+            {
+                title: "Day 2: A Spirit-Filled Life",
+                theme: "The Holy Spirit is the greatest change agent in the universe.",
+                scripture: "But you will receive power when the Holy Spirit comes on you; and you will be my witnesses... - Acts 1:8",
+                prayerFocus: "Surrendering your own strength and abilities, and inviting the Holy Spirit to fill you with His power and guidance.",
+                reflectionPrompt: "In what part of my life do I feel a need for God’s power and presence?",
+                hopeCarrierAction: "Take a moment of silence and simply ask the Holy Spirit to fill you.",
+            },
+            {
+                title: "Day 3: A Life-Giving Life",
+                theme: "We are here to receive and release the life of God.",
+                scripture: "I have come that they may have life, and have it to the full. - John 10:10",
+                prayerFocus: "Surrendering feelings of emptiness or fatigue, and asking Jesus to bring His abundant life into every situation.",
+                reflectionPrompt: "Where can I release God's life and hope to someone else today?",
+                hopeCarrierAction: "Offer an encouraging word or an act of service to someone you encounter.",
+            },
+            {
+                title: "Day 4: Surrender Through God’s Word",
+                theme: "The Bible is not a book; it's a voice.",
+                scripture: "All Scripture is God-breathed... - 2 Timothy 3:16",
+                prayerFocus: "Surrendering your own thoughts and opinions, asking for a heart that is receptive to God's voice through His Word.",
+                reflectionPrompt: "What is God speaking to me through His Word today?",
+                hopeCarrierAction: "Read a short passage from the Bible and meditate on one sentence.",
+            },
+            {
+                title: "Day 5: Surrender Through Prayer and Solitude",
+                theme: "Prayer is a lifestyle, not a last resort.",
+                scripture: "Not my will, but yours be done. - Luke 22:42",
+                prayerFocus: "Surrendering your will to God's will, just as Jesus did, and finding peace in the practice of solitude.",
+                reflectionPrompt: "What is my 'will' for this situation, and am I willing to surrender it for His?",
+                hopeCarrierAction: "Set aside 5 minutes of quiet time to simply be with God, without distractions.",
+            },
+            {
+                title: "Day 6: Surrender to God's Mission",
+                theme: "We are a family on mission.",
+                scripture: "Therefore go and make disciples of all nations... - Matthew 28:19",
+                prayerFocus: "Surrendering your comfort and security, asking God to reveal the places and people He wants you to bring hope to.",
+                reflectionPrompt: "Who is one person God has put in my life that needs to hear about His hope?",
+                hopeCarrierAction: "Pray for that person by name.",
+            },
+            {
+                title: "Day 7: The Freedom of Surrender",
+                theme: "Jesus is the narrow gate that leads to a wide life.",
+                scripture: "It is for freedom that Christ has set us free. - Galatians 5:1",
+                prayerFocus: "A celebratory prayer of gratitude for the freedom found in living a fully surrendered life.",
+                reflectionPrompt: "What new freedom have I discovered on this journey?",
+                hopeCarrierAction: "Share a brief summary of the journey with a friend or family member, inviting them to find hope in Jesus.",
+            },
+        ];
+
+        // UI element references
+        const app = document.getElementById('app');
+        const homeScreen = document.getElementById('home-screen');
+        const dayDetailScreen = document.getElementById('day-detail-screen');
+        const dayList = document.getElementById('day-list');
+        const backButton = document.getElementById('back-button');
+        const prevDayButton = document.getElementById('prev-day');
+        const nextDayButton = document.getElementById('next-day');
+        const dayTitle = document.getElementById('day-title');
+        const dayTheme = document.getElementById('day-theme');
+        const dayScripture = document.getElementById('day-scripture');
+        const prayerFocus = document.getElementById('prayer-focus');
+        const reflectionPrompt = document.getElementById('reflection-prompt');
+        const hopeCarrierAction = document.getElementById('hope-carrier-action');
+        const journalEntry = document.getElementById('journal-entry');
+
+        let currentDayIndex = null;
+
+        // Function to render the home screen
+        function renderHomeScreen() {
+            homeScreen.classList.remove('hidden');
+            dayDetailScreen.classList.add('hidden');
+            dayList.innerHTML = ''; // Clear previous cards
+            journeyData.forEach((day, index) => {
+                const card = document.createElement('div');
+                card.className = 'card p-6 rounded-xl shadow-md cursor-pointer transition-colors hover:bg-gray-100';
+                card.innerHTML = `
+                    <h3 class="text-xl font-semibold mb-2" style="color: #3D2C2E;">${day.title}</h3>
+                    <p class="text-sm" style="color: #3D2C2E;">${day.theme}</p>
+                `;
+                card.addEventListener('click', () => {
+                    currentDayIndex = index;
+                    renderDayDetail(currentDayIndex);
+                });
+                dayList.appendChild(card);
+            });
+        }
+
+        // Function to render the day detail screen
+        function renderDayDetail(index) {
+            homeScreen.classList.add('hidden');
+            dayDetailScreen.classList.remove('hidden');
+
+            const day = journeyData[index];
+            dayTitle.textContent = day.title;
+            dayTheme.textContent = day.theme;
+            dayScripture.textContent = day.scripture;
+
+            // Set the new content for the combined card
+            prayerFocus.textContent = day.prayerFocus;
+            reflectionPrompt.textContent = day.reflectionPrompt;
+            hopeCarrierAction.textContent = day.hopeCarrierAction;
+
+            // Load journal entry from local storage
+            const savedEntry = localStorage.getItem(`journal-entry-${index}`);
+            journalEntry.value = savedEntry || '';
+
+            // Update navigation button states
+            prevDayButton.disabled = index === 0;
+            prevDayButton.classList.toggle('opacity-50', index === 0);
+            nextDayButton.disabled = index === journeyData.length - 1;
+            nextDayButton.classList.toggle('opacity-50', index === journeyData.length - 1);
+        }
+
+        // Event Listeners
+        backButton.addEventListener('click', () => {
+            renderHomeScreen();
+        });
+
+        prevDayButton.addEventListener('click', () => {
+            if (currentDayIndex > 0) {
+                currentDayIndex--;
+                renderDayDetail(currentDayIndex);
+            }
+        });
+
+        nextDayButton.addEventListener('click', () => {
+            if (currentDayIndex < journeyData.length - 1) {
+                currentDayIndex++;
+                renderDayDetail(currentDayIndex);
+            }
+        });
+
+        // Save journal entry to local storage on input
+        journalEntry.addEventListener('input', () => {
+            if (currentDayIndex !== null) {
+                localStorage.setItem(`journal-entry-${currentDayIndex}`, journalEntry.value);
+            }
+        });
+
+        // Initial render
+        window.onload = renderHomeScreen;
+
+    </script>
+</body>
+</html>
